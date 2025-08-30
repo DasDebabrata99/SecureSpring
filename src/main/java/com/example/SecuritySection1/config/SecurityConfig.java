@@ -2,6 +2,8 @@ package com.example.SecuritySection1.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,16 +33,13 @@ public class SecurityConfig {
     }
     
     @Bean
-    public UserDetailsService createUserDetails() {
-    	UserDetails user = User.withUsername("user").password("{noop}12345").build();
-    	//bcrypt hash generated for password "54321" using th website "https://bcrypt-generator.com/"
-    	UserDetails admin = User.withUsername("admin").password("{bcrypt}$2a$12$QdReAGY3RcaUCAXh3h7DceJ3YAJ/GfPrLmfaFWRa5LezgKRoaV3Ae").build();
-    	return new InMemoryUserDetailsManager(user, admin);
+    public UserDetailsService createUserDetails(DataSource dataSource) {
+    	
+    	return new JdbcUserDetailsManager(dataSource);
     }
     
     @Bean
     public PasswordEncoder createPasswordEncoder() {
-    	u
     	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
     
