@@ -21,9 +21,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(csrf->csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/notice","/contact").permitAll()
+                .requestMatchers("/notice","/contact","/register").permitAll()
                 .requestMatchers("/myAccount","/myBalance").authenticated()
                 .anyRequest().authenticated()
             );
@@ -32,12 +32,12 @@ public class SecurityConfig {
         return http.build();
     }
     
-    @Bean
-    public UserDetailsService createUserDetails(DataSource dataSource) {
-    	
-    	return new JdbcUserDetailsManager(dataSource);
-    }
-    
+//    @Bean
+//    public UserDetailsService createUserDetails(DataSource dataSource) {
+//    	
+//    	return new JdbcUserDetailsManager(dataSource);
+//    }
+//    
     @Bean
     public PasswordEncoder createPasswordEncoder() {
     	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
