@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -21,13 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import exceptionHandling.CustomBasicAuthenticationEntryPoint;
 
 @Configuration
-@Profile("!prod")
-public class SecurityConfig {
+@Profile("prod")
+public class SecurityConfigProd {
 
     @Bean
     public
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.requiresChannel(rec-> rec.anyRequest().requiresInsecure())
+        http.requiresChannel(rec-> rec.anyRequest().requiresSecure())
             .csrf(csrf->csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/notice","/contact","/register").permitAll()
@@ -35,7 +34,6 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             );
         http.formLogin();
-        http.httpBasic(withDefaults()); 
         http.httpBasic(hce-> hce.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint())); 
         return http.build();
     }
@@ -48,8 +46,7 @@ public class SecurityConfig {
 //    
     @Bean
     public PasswordEncoder createPasswordEncoder() {
-    	return new BCryptPasswordEncoder();
-    			
+    	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
     
 }

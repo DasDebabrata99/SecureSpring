@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BankController {
 
-    @GetMapping("/myAccount")
+    @GetMapping("/myAccountDetails")
 	public String getAccount() {
 		return "Here are my account details";
 	}
     
-    @GetMapping("/myBalance")
+    @GetMapping("/myBalanceDetails")
 	public String getBalance() {
 		return "Here are my balance details";
 	}
