@@ -26,7 +26,7 @@ public class BankController {
 		return "Here are my contact	details";
 	}
     
-    @GetMapping("/notice")
+    @GetMapping("/noticedetails")
 	public String getNotice() {
 		return "Here are my notice details";
 	}
