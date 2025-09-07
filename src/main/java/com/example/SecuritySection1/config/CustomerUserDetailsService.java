@@ -2,6 +2,7 @@ package com.example.SecuritySection1.config;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,8 +40,10 @@ public class CustomerUserDetailsService implements UserDetailsService{
 	        throw new UsernameNotFoundException("User not found with email: " + username);
 	    }
 
-	    List<GrantedAuthority> authorities = 
-	            List.of(new SimpleGrantedAuthority("ROLE_" + customer.get().getRole()));
+	    List<GrantedAuthority> authorities = customer.get().getAuthorities().stream()
+	    		.map(authority-> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
+	    //List<GrantedAuthority> authorities = 
+	      ///      List.of(new SimpleGrantedAuthority("ROLE_" + customer.get().getRole()));
 
 	    return new User(customer.get().getEmail(), customer.get().getPwd(), authorities);
 	}

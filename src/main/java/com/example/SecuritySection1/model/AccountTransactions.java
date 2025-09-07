@@ -37,7 +37,7 @@ public class AccountTransactions {
 	@Column(name = "transaction_amt")
 	private int transactionAmt;
 	
-	@Column(name = "closing_balance")
+	@Column(name = "closing_bal")
 	private int closingBalance;
 	
 	@Column(name = "create_dt")
